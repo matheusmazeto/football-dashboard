@@ -1,47 +1,60 @@
-import DarkModeToggle from '~/components/DarkModeToggle/DarkModeToggle';
+import { useEffect } from 'react';
+import { useLoaderData } from 'remix';
+
+import type { LoaderFunction } from 'remix';
+
+export type CountriesProperties = {
+  code: string;
+  flag: string;
+  name: string;
+};
+
+type Countries = {
+  countries: CountriesProperties[];
+};
+
+export const loader: LoaderFunction = async (): Promise<
+  Countries | Response
+> => {
+  return {};
+  // const getCountriesLeague = await FootballApi.get(`/countries`);
+
+  // if (!getCountriesLeague) {
+  //   throw new Response('Countries not found!', {
+  //     status: 404,
+  //   });
+  // }
+
+  // return {
+  //   countries: getCountriesLeague.data.response.filter(
+  //     (countries: CountriesProperties) => countries.name === 'England'
+  //   ),
+  // };
+};
 
 export default function Index() {
-  return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
-      <DarkModeToggle />
+  const countries = useLoaderData<CountriesProperties[]>();
 
-      <div className="mt-16 max-w-xl mx-4 sm:mx-auto text-gray-900 dark:text-gray-50">
-        <h1 className="text-4xl font-bold">Hey there 👋</h1>
-        <p className="mt-4 text-lg">
-          This is a demo for adding{' '}
-          <a
-            className="text-blue-700 dark:text-blue-400 font-medium hover:underline hover:underline-offset-1"
-            href="https://tailwindcss.com/"
-          >
-            tailwindcss
-          </a>{' '}
-          and dark mode to a{' '}
-          <a
-            className="text-blue-700 dark:text-blue-400 font-medium hover:underline hover:underline-offset-1"
-            href="https://remix.run/"
-          >
-            Remix
-          </a>{' '}
-          app. You can find the code on my{' '}
-          <a
-            className="text-blue-700 dark:text-blue-400 font-medium hover:underline hover:underline-offset-1"
-            href="https://github.com/matheusmazeto/remix-tailwind-starter"
-          >
-            GitHub
-          </a>
-          .
-        </p>
-        <p className="text-lg">
-          If you have any questions, feel free to message me on{' '}
-          <a
-            className="text-blue-700 dark:text-blue-400 font-medium hover:underline hover:underline-offset-1"
-            href="https://twitter.com/mazeto"
-          >
-            Twitter
-          </a>
-          .
-        </p>
-      </div>
-    </div>
-  );
+  async function getUsers() {
+    const res = await fetch('https://api.github.com/users/defunkt');
+    const api_url = window.ENV.FOOTBALL_API_KEY;
+
+    console.log({ api: api_url });
+
+    const data = await res.json();
+
+    return console.log({ data });
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  // if (typeof window !== 'undefined') {
+  //   console.log(window.ENV);
+  // }
+
+  // console.log(process);
+
+  return <div>Index</div>;
 }

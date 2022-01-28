@@ -30,6 +30,9 @@ export const meta: MetaFunction = () => {
 
 export type LoaderData = {
   theme: Theme | null;
+  ENV: {
+    [key: string]: string | undefined;
+  };
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -37,6 +40,10 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const data: LoaderData = {
     theme: themeSession.getTheme(),
+    ENV: {
+      FOOTBALL_API_KEY: process.env.FOOTBALL_API_KEY,
+      FOOTBALL_API_HOST: process.env.FOOTBALL_API_HOST,
+    },
   };
 
   return data;
@@ -59,6 +66,13 @@ function App() {
       <body>
         <Outlet />
         <ScrollRestoration />
+        {data && data.ENV && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+            }}
+          />
+        )}
         <Scripts />
         {process.env.NODE_ENV === 'development' && <LiveReload />}
       </body>
@@ -68,6 +82,8 @@ function App() {
 
 export default function AppWithProviders() {
   const data = useLoaderData<LoaderData>();
+
+  // console.log(data.ENV);
 
   return (
     <ThemeProvider specifiedTheme={data.theme}>
