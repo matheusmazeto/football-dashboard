@@ -42,7 +42,6 @@ export const loader: LoaderFunction = async ({ request }) => {
     theme: themeSession.getTheme(),
     ENV: {
       FOOTBALL_API_KEY: process.env.FOOTBALL_API_KEY,
-      FOOTBALL_API_HOST: process.env.FOOTBALL_API_HOST,
     },
   };
 

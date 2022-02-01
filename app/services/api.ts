@@ -1,10 +1,9 @@
 import axios from 'axios';
 
 export const FootballApi = axios.create({
-  baseURL: 'https://v3.football.api-sports.io',
+  baseURL: 'https://api.sportsdata.io/v3/soccer/scores/json/',
   method: 'GET',
-  headers: {
-    'x-rapidapi-key': '2b747603f358ff953ba29d2e74d6b196',
-    'x-rapidapi-host': 'v3.football.api-sports.io',
+  params: {
+    key: process.env.FOOTBALL_API_KEY,
   },
 });

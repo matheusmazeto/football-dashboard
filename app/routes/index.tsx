@@ -1,60 +1,96 @@
-import { useEffect } from 'react';
 import { useLoaderData } from 'remix';
+
+import { BundesligaIcon } from '~/icons/leagues/bundesliga';
+import { LaLigaIcon } from '~/icons/leagues/laliga';
+import { Ligue1Icon } from '~/icons/leagues/ligue-1';
+import { PremierLeagueIcon } from '~/icons/leagues/premier-league';
+import { SerieAIcon } from '~/icons/leagues/serie-a';
+import { FootballApi } from '~/services/api';
 
 import type { LoaderFunction } from 'remix';
 
-export type CountriesProperties = {
-  code: string;
-  flag: string;
-  name: string;
-};
+export const loader: LoaderFunction = async () => {
+  const [
+    premierLeague,
+    laLiga,
+    bundesliga,
+    serieA,
+    ligue1,
+    championsLeague,
+    europaLeague,
+  ] = await Promise.all([
+    FootballApi.get(`/CompetitionDetails/EPL`),
+    FootballApi.get(`/CompetitionDetails/ESP`),
+    FootballApi.get(`/CompetitionDetails/DEB`),
+    FootballApi.get(`/CompetitionDetails/ITSA`),
+    FootballApi.get(`/CompetitionDetails/FRL1`),
+    FootballApi.get(`/CompetitionDetails/UCL`),
+    FootballApi.get(`/CompetitionDetails/UEL`),
+  ]);
 
-type Countries = {
-  countries: CountriesProperties[];
-};
+  // const leagues = await Promise.all([
+  //   FootballApi.get(`/CompetitionDetails/EPL`),
+  //   FootballApi.get(`/CompetitionDetails/ESP`),
+  //   FootballApi.get(`/CompetitionDetails/DEB`),
+  //   FootballApi.get(`/CompetitionDetails/ITSA`),
+  //   FootballApi.get(`/CompetitionDetails/FRL1`),
+  //   FootballApi.get(`/CompetitionDetails/UCL`),
+  //   FootballApi.get(`/CompetitionDetails/UEL`),
+  // ]);
 
-export const loader: LoaderFunction = async (): Promise<
-  Countries | Response
-> => {
-  return {};
-  // const getCountriesLeague = await FootballApi.get(`/countries`);
+  // .map(([name, props]) => {
+  //   const Overlay = overlays.get(name, null);
+  //   return Overlay == null ? null : <Overlay key={name} {...props} />;
+  // })
+  // .valueSeq()
+  // .toArray();
 
-  // if (!getCountriesLeague) {
+  // console.log({ rendered });
+
+  // if (!P) {
   //   throw new Response('Countries not found!', {
   //     status: 404,
   //   });
   // }
 
-  // return {
-  //   countries: getCountriesLeague.data.response.filter(
-  //     (countries: CountriesProperties) => countries.name === 'England'
-  //   ),
-  // };
+  return {
+    premierLeague: premierLeague.data,
+    laLiga: laLiga.data,
+    bundesliga: bundesliga.data,
+    serieA: serieA.data,
+    ligue1: ligue1.data,
+    championsLeague: championsLeague.data,
+    europaLeague: europaLeague.data,
+  };
 };
 
 export default function Index() {
-  const countries = useLoaderData<CountriesProperties[]>();
+  const leagues = useLoaderData();
 
-  async function getUsers() {
-    const res = await fetch('https://api.github.com/users/defunkt');
-    const api_url = window.ENV.FOOTBALL_API_KEY;
+  console.log({ leagues });
 
-    console.log({ api: api_url });
+  const leagueKeys = new Map([
+    ['EPL', PremierLeagueIcon],
+    ['ESP', LaLigaIcon],
+    ['DEB', BundesligaIcon],
+    ['ITSA', SerieAIcon],
+    ['FRL1', Ligue1Icon],
+  ]);
 
-    const data = await res.json();
+  const rendered = Array.from(leagueKeys.keys()).map(item => {
+    const Component = leagueKeys.get(item);
+    return <Component key={item} size={180} />;
+  });
 
-    return console.log({ data });
-  }
+  return (
+    <div className="container text-cyan-300">
+      <PremierLeagueIcon size={432} />
+      <LaLigaIcon size={348} />
+      <BundesligaIcon size={332} />
+      <SerieAIcon size={332} />
+      <Ligue1Icon size={332} />
 
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  // if (typeof window !== 'undefined') {
-  //   console.log(window.ENV);
-  // }
-
-  // console.log(process);
-
-  return <div>Index</div>;
+      {/* {rendered} */}
+    </div>
+  );
 }
