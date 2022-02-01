@@ -9,6 +9,8 @@ import {
   useLoaderData,
 } from 'remix';
 
+import { EnvironmentVariables } from 'global';
+
 import styles from './tailwind.css';
 import {
   NonFlashOfWrongThemeEls,
@@ -28,11 +30,9 @@ export const meta: MetaFunction = () => {
   return { title: 'New Remix App' };
 };
 
-export type LoaderData = {
+type LoaderData = {
   theme: Theme | null;
-  ENV: {
-    [key: string]: string | undefined;
-  };
+  ENV: EnvironmentVariables;
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -41,7 +41,9 @@ export const loader: LoaderFunction = async ({ request }) => {
   const data: LoaderData = {
     theme: themeSession.getTheme(),
     ENV: {
-      FOOTBALL_API_KEY: process.env.FOOTBALL_API_KEY,
+      API_FOOTBALL_URL: process.env.API_FOOTBALL_URL,
+      API_FOOTBALL_KEY: process.env.API_FOOTBALL_KEY,
+      API_FOOTBALL_HOST: process.env.API_FOOTBALL_HOST,
     },
   };
 
