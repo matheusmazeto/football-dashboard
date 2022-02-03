@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
-import { MoonIcon } from '~/icons/moon-icon';
-import { SunIcon } from '~/icons/sun-icon';
+import { MoonIcon } from '~/icons/moon';
+import { SunIcon } from '~/icons/sun';
 import { Theme, Themed, useTheme } from '~/utils/theme-provider';
 
 const iconTransformOrigin = { transformOrigin: '50% 100px' };
