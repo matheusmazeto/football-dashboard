@@ -1,3 +1,6 @@
+import Main from '~/components/Main/Main';
+import Sidebar from '~/components/Sidebar/Sidebar';
+
 import type { LoaderFunction } from 'remix';
 
 export const loader: LoaderFunction = async () => {
@@ -5,5 +8,10 @@ export const loader: LoaderFunction = async () => {
 };
 
 export default function Index() {
-  return <div>Index</div>;
+  return (
+    <div className="flex min-h-full">
+      <Sidebar />
+      <Main />
+    </div>
+  );
 }
