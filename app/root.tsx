@@ -23,7 +23,22 @@ import { getThemeSession } from './utils/theme.server';
 import type { LinksFunction, MetaFunction, LoaderFunction } from 'remix';
 
 export const links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: styles }];
+  return [
+    { rel: 'stylesheet', href: styles },
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.googleapis.com',
+    },
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.gstatic.com',
+      crossOrigin: 'anonymous',
+    },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;700;800&display=swap',
+    },
+  ];
 };
 
 export const meta: MetaFunction = () => {
