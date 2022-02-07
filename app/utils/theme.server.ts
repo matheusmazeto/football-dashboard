@@ -5,7 +5,7 @@ import { Theme, isTheme } from './theme-provider';
 
 const themeStorage = createCookieSessionStorage({
   cookie: {
-    name: 'my_remix_theme',
+    name: 'mm_theme',
     secure: true,
     secrets: [getRequiredServerEnvVar('SESSION_SECRET')],
     sameSite: 'lax',
